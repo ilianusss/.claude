@@ -1,25 +1,18 @@
-# ~/.claude
+# .claude
 
-My Claude Code setup for fullstack and devops work. This repo is `~/.claude` itself.
+A Claude Code setup for fullstack and devops work; this repo is `~/.claude` itself.
 
-**Status:** being built, milestone M0 of M7. [docs/plan.md](docs/plan.md) has the full design until the build is done.
+## Role in the system
 
-## What is in it
+The setup loads two mods: `house`, kept here, and `workflow`, a git submodule pointing at [claude-workflow](https://github.com/ilianusss/claude-workflow), which can also be installed on its own as a plugin.
 
-| Path            | What                                                                                  |
-| --------------- | ------------------------------------------------------------------------------------- |
-| `CLAUDE.md`     | Instructions for every session                                                        |
-| `settings.json` | Permissions, sandbox, the `rtk` hook, and the mods to load                            |
-| `rules/`        | Guidance loaded when Claude touches a matching file type                              |
-| `skills/`       | Knowledge Claude loads on demand: tests first, clean code, secure code, git, and more |
-| `agents/`       | The reviewer, run in a fresh context                                                  |
-| `mods/house`    | Rules for every session: no em dash, no weakened tests                                |
-| `mods/workflow` | The `/workflow` command, a submodule: [claude-workflow](https://github.com/ilianusss/claude-workflow) |
-| `docs/`         | How it works and how to change it                                                     |
+## Prerequisites
 
-Everything else in `~/.claude` is Claude Code's runtime data, ignored by git.
+- Claude Code 2.1.308 or later (the mods use an early-access API).
+- git, with access to both repos.
+- [rtk](https://github.com/rtk-ai/rtk), which the Bash hook calls.
 
-## Install
+## Getting started
 
 On a new machine:
 
@@ -38,14 +31,37 @@ rsync -a --ignore-existing \
   ~/.claude.old/ ~/.claude/
 ```
 
-Old skills are left behind on purpose. Keep `~/.claude.old` until a week of use shows nothing is missing.
+Old skills are left behind on purpose. Keep `~/.claude.old` until a week of use shows nothing is missing. Then start a session in a repo and type `/workflow`: an answer means the mods loaded.
 
-Not in this repo, and untouched by the swap:
+## Commands
+
+The daily commands are `/workflow` and its subcommands, described in [docs/workflow.md](docs/workflow.md).
+
+## Project structure
+
+```text
+CLAUDE.md        instructions for every session
+settings.json    permissions, sandbox, the rtk hook, the mods to load
+rules/           guidance loaded when Claude touches a matching file
+skills/          knowledge Claude loads on demand
+agents/          the reviewer, run in a fresh context
+mods/house/      every session: em dashes, safety asks, weakened tests
+mods/workflow/   the /workflow mod (submodule)
+docs/            how it works and how to change it
+```
+
+Everything else in `~/.claude` is Claude Code's runtime data, ignored by git.
+
+## Documentation
+
+- [docs/architecture.md](docs/architecture.md): how the setup is built and enforced.
+- [docs/workflow.md](docs/workflow.md): using `/workflow`.
+- [docs/editing.md](docs/editing.md): changing the setup, by hand or with Claude.
+- [docs/decisions.md](docs/decisions.md): what was decided and why.
+
+## Outside this repo
+
+The swap leaves these untouched:
 
 - MCP servers, in `~/.claude.json`: `claude mcp list` shows them.
-- Skills and plugins from your claude.ai account and `/plugin`.
-
-## Docs
-
-- [docs/plan.md](docs/plan.md): the design, until it is split into the docs below.
-- `docs/architecture.md`, `docs/workflow.md`, `docs/editing.md`, `docs/decisions.md`: written in milestone M7.
+- Skills and plugins from the claude.ai account and `/plugin`.
