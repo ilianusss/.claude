@@ -4,6 +4,7 @@
 /*
 !/README.md
 !/.gitignore
+!/.gitattributes
 !/.gitmodules
 !/CLAUDE.md
 !/settings.json

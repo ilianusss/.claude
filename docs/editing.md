@@ -42,6 +42,17 @@ claude plugin test ~/.claude/mods/house && claude plugin test ~/.claude/mods/wor
 - **Rules, skills, agents, CLAUDE.md** are read when a session starts: start a new one, or `/clear`.
 - **settings.json**: most keys apply to the running session; restart if in doubt.
 
+## The model and effort defaults are not tracked
+
+`/model` and `/effort` rewrite `model`, `effortLevel` and `modelSettings` in `settings.json`. A clean filter in `.gitattributes` strips them when git compares or stages the file, so they never show in `git status` and are not in the repo. The filter config lives in `.git/config`, so set it once on each clone (needs `jq`):
+
+```sh
+git config filter.strip-model-defaults.clean "jq 'del(.model, .effortLevel, .modelSettings)'"
+git config filter.strip-model-defaults.smudge cat
+```
+
+A pull that changes `settings.json` replaces the file with the committed one, which has none of these keys: set the model again with `/model` afterwards.
+
 ## The workflow mod is its own repo
 
 `mods/workflow` is a git submodule pointing at `ilianusss/claude-workflow`. To change it:

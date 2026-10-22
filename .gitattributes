@@ -1,0 +1,3 @@
+# /model and /effort rewrite these keys all the time: keep them out of the repo.
+# Needs the filter config from docs/editing.md on each clone.
+settings.json filter=strip-model-defaults

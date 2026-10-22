@@ -27,7 +27,6 @@
       "Edit(**/.git/claude-workflow/**)"
     ]
   },
-  "model": "sonnet",
   "hooks": {
     "PreToolUse": [
       {
@@ -94,21 +93,6 @@
       "docker *",
       "rtk docker *"
     ]
-  },
-  "effortLevel": "medium",
-  "modelSettings": {
-    "claude-opus-5": {
-      "effortLevel": "high"
-    },
-    "claude-opus-5-5": {
-      "effortLevel": "high"
-    },
-    "claude-sonnet-5-5": {
-      "effortLevel": "high"
-    },
-    "claude-haiku-5-5": {
-      "effortLevel": "medium"
-    }
   },
   "tui": "fullscreen",
   "theme": "dark-ansi"

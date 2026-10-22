@@ -40,3 +40,7 @@ Dated one-line entries: what was decided and why. Newest last. Add one whenever 
 - **`house` stops asking for every unsandboxed command**: a harmless retry now keeps the verdict from beneath, so the auto-mode classifier judges it. The ask stays for commands on the risky list and for commands that touch a secret path, because the `deny` rules bind a command only inside the sandbox.
 - **`git push` never asks**: Claude may push, the ask stays on `gh pr merge`.
 - **`rm -rf` asks only outside the sandbox**: inside it the damage stays in the working directory, which the sandbox already contains.
+
+## 2026-10-22: model and effort stay out of the repo
+
+- **A git clean filter strips `model`, `effortLevel` and `modelSettings` from `settings.json`**: `/model` rewrites them in the user file, which has no `.local` variant, so they made every session leave a diff. Git cannot ignore single lines, and `skip-worktree` would hide real edits to the file.
