@@ -17,21 +17,21 @@ The setup loads two mods: `house`, kept here, and `workflow`, a git submodule po
 On a new machine:
 
 ```sh
-git clone --recurse-submodules https://github.com/ilianusss/.claude.git ~/.claude
+git clone --recurse-submodules git@github.com:ilianusss/.claude.git ~/.claude
 ```
 
 On a machine that already has a `~/.claude`, quit every Claude Code session, then replace the folder and bring back the runtime data (memory, transcripts, history, plugins, themes):
 
 ```sh
 mv ~/.claude ~/.claude.old
-git clone --recurse-submodules https://github.com/ilianusss/.claude.git ~/.claude
+git clone --recurse-submodules git@github.com:ilianusss/.claude.git ~/.claude
 rsync -a --ignore-existing \
   --exclude /skills/ --exclude /CLAUDE.md --exclude /RTK.md \
   --exclude '/settings.json*' --exclude /dev-mods/ \
   ~/.claude.old/ ~/.claude/
 ```
 
-Old skills are left behind on purpose. Keep `~/.claude.old` until a week of use shows nothing is missing. Then start a session in a repo and type `/workflow`: an answer means the mods loaded.
+The clones use SSH so changes to the setup can be pushed back; the submodule follows the same protocol. Old skills are left behind on purpose. Keep `~/.claude.old` until a week of use shows nothing is missing. Then start a session in a repo and type `/workflow`: an answer means the mods loaded.
 
 ## Commands
 
