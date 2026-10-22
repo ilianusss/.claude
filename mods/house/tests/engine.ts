@@ -3,6 +3,7 @@ import type { On } from 'claude-code'
 export type World = {
   files?: Record<string, string>
   git?: Record<string, string>
+  verdict?: 'allow' | 'ask' | 'deny'
 }
 
 export function engineBeneath(on: On, world: World = {}): void {
@@ -23,5 +24,5 @@ export function engineBeneath(on: On, world: World = {}): void {
   })
   on('fs.exists', (_, e) => ({ value: files[e.path] !== undefined }))
   on('tool.call', () => ({ result: {}, text: 'ok' }))
-  on('tool.check', () => ({ decision: 'allow' }))
+  on('tool.check', () => ({ decision: world.verdict ?? 'allow' }))
 }
