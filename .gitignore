@@ -1,0 +1,19 @@
+# This repo is ~/.claude, which is also Claude Code's runtime folder
+# (history, projects, sessions, caches, plugins): ignore everything at the
+# root, then re-include the setup files.
+/*
+!/README.md
+!/.gitignore
+!/.gitmodules
+!/CLAUDE.md
+!/settings.json
+!/rules/
+!/skills/
+!/agents/
+!/mods/
+!/docs/
+
+# Written by Claude Code beside each mod it loads
+/mods/*/.claude-plugin/types/
+
+.DS_Store
