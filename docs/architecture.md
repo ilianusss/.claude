@@ -45,7 +45,7 @@ Everything else in `~/.claude` is Claude Code's runtime data, kept out of git by
 | What must hold | Prose | Enforced by |
 | --- | --- | --- |
 | No secret is read | CLAUDE.md, Safety | `Read` deny rules, which the sandbox also applies to shell reads |
-| Nothing is pushed, deployed or discarded without asking | CLAUDE.md, Safety | Ask rules (plain and `rtk` forms); `house` asks for the forms rules miss and for anything run outside the sandbox |
+| Nothing is pushed, deployed or discarded without asking | CLAUDE.md, Safety | `house` asks for the risky commands and for anything run outside the sandbox. No settings rule backs it: `settings.json` holds no `ask` or `allow` rules, so the rest is on the prose |
 | No em dash | CLAUDE.md, Writing | `house`: refuses edits, notebook cells, commit messages and GitHub text that add one; rewrites replies |
 | No weakened test | `rules/tests.md`, `writing-tests-first` | `house`: a note on each test edit, a follow-up at the end of a turn for shell changes |
 | Tests stay apart from the implementation | `writing-tests-first`, the build phase | `workflow`: the test lock |
@@ -72,7 +72,7 @@ Both are TypeScript modules for the Claude Code mod API (early access: it may ch
 **house** applies to every session:
 
 - typography: refuses a Write, Edit or notebook cell that adds an em dash, and a commit message or GitHub body that holds one; rewrites em dashes in Claude's replies to a spaced hyphen before they are stored;
-- safety asks: a person-only ask for the risky commands of the settings ask list, matched with or without `rtk`, in any segment of a compound command, in forms prefix rules miss (`git -C dir push`), and for any command Claude wants to run outside the sandbox;
+- safety asks: a person-only ask for a built-in list of risky commands (push, discards, infra changes, publishes), matched with or without `rtk`, in any segment of a compound command, in forms prefix rules miss (`git -C dir push`), and for any command Claude wants to run outside the sandbox;
 - test integrity: a note when an edit adds `.only` or a skip, removes or changes an assertion, or rewrites a snapshot; at the end of a turn, the same check on the git diff catches shell changes and queues one follow-up.
 
 **workflow** ([ilianusss/claude-workflow](https://github.com/ilianusss/claude-workflow)) runs project workflows:

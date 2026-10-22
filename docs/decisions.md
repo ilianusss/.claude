@@ -30,3 +30,7 @@ Dated one-line entries: what was decided and why. Newest last. Add one whenever 
 - **Mod tools ask with `$.ui.ask`**: a tool the mod serves skips the permission step, so a `tool.check` ask never fires for it.
 - **`/workflow next` runs `/clear` from a timer**: a mod cannot run a command from inside its own command hook.
 - **The workflow state folder is denied to `Edit`**: through the sandbox merge this also blocks shell writes, and the mod writes with its own file access.
+
+## 2026-10-22: fewer deterministic blockers
+
+- **`settings.json` keeps only `deny` rules**: the `ask` list is gone and so is the `allow` list, which `autoAllowBashIfSandboxed` already made redundant for sandboxed commands. Push, discards, infra changes and publishes now rest on the CLAUDE.md Safety section and on the `house` asks, because the aim is to block only secrets and the workflow state and trust the model with the rest.
