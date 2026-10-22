@@ -173,7 +173,7 @@
       "Bash(rtk dropdb:*)"
     ]
   },
-  "model": "opus",
+  "model": "sonnet",
   "hooks": {
     "PreToolUse": [
       {
@@ -201,7 +201,8 @@
       "source": {
         "source": "github",
         "repo": "ilianusss/claude-skin"
-      }
+      },
+      "autoUpdate": true
     }
   },
   "sandbox": {
