@@ -1,0 +1,260 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "SKIN_THEME_HOME": "~/.theme",
+    "CLAUDE_CODE_PLUGIN_DIRS": "~/.claude/mods/workflow:~/.claude/mods/house"
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(rtk git status:*)",
+      "Bash(git diff:*)",
+      "Bash(rtk git diff:*)",
+      "Bash(git log:*)",
+      "Bash(rtk git log:*)",
+      "Bash(git show:*)",
+      "Bash(rtk git show:*)",
+      "Bash(git blame:*)",
+      "Bash(rtk git blame:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(rtk git rev-parse:*)",
+      "Bash(git ls-files:*)",
+      "Bash(rtk git ls-files:*)",
+      "Bash(npm test:*)",
+      "Bash(rtk npm test:*)",
+      "Bash(npm run test:*)",
+      "Bash(rtk npm run test:*)",
+      "Bash(npm run lint:*)",
+      "Bash(rtk npm run lint:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(rtk npm run typecheck:*)",
+      "Bash(npm run build:*)",
+      "Bash(rtk npm run build:*)",
+      "Bash(pnpm test:*)",
+      "Bash(rtk pnpm test:*)",
+      "Bash(pnpm run test:*)",
+      "Bash(rtk pnpm run test:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(rtk pnpm lint:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(rtk pnpm typecheck:*)",
+      "Bash(pnpm build:*)",
+      "Bash(rtk pnpm build:*)",
+      "Bash(npx vitest:*)",
+      "Bash(rtk npx vitest:*)",
+      "Bash(npx jest:*)",
+      "Bash(rtk npx jest:*)",
+      "Bash(npx tsc:*)",
+      "Bash(rtk npx tsc:*)",
+      "Bash(npx eslint:*)",
+      "Bash(rtk npx eslint:*)",
+      "Bash(npx playwright test:*)",
+      "Bash(rtk npx playwright test:*)",
+      "Bash(pytest:*)",
+      "Bash(rtk pytest:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(rtk python -m pytest:*)",
+      "Bash(ruff check:*)",
+      "Bash(rtk ruff check:*)",
+      "Bash(mypy:*)",
+      "Bash(rtk mypy:*)",
+      "Bash(go test:*)",
+      "Bash(rtk go test:*)",
+      "Bash(go vet:*)",
+      "Bash(rtk go vet:*)",
+      "Bash(go build:*)",
+      "Bash(rtk go build:*)",
+      "Bash(cargo test:*)",
+      "Bash(rtk cargo test:*)",
+      "Bash(cargo check:*)",
+      "Bash(rtk cargo check:*)",
+      "Bash(cargo clippy:*)",
+      "Bash(rtk cargo clippy:*)",
+      "Bash(cargo build:*)",
+      "Bash(rtk cargo build:*)",
+      "Bash(make test:*)",
+      "Bash(rtk make test:*)",
+      "Bash(make lint:*)",
+      "Bash(rtk make lint:*)",
+      "Bash(rtk brew *)",
+      "Bash(rtk curl *)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(rtk git push:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(rtk git reset --hard:*)",
+      "Bash(git clean:*)",
+      "Bash(rtk git clean:*)",
+      "Bash(git checkout:*)",
+      "Bash(rtk git checkout:*)",
+      "Bash(git restore:*)",
+      "Bash(rtk git restore:*)",
+      "Bash(git stash:*)",
+      "Bash(rtk git stash:*)",
+      "Bash(git switch:*)",
+      "Bash(rtk git switch:*)",
+      "Bash(git branch -D:*)",
+      "Bash(rtk git branch -D:*)",
+      "Bash(git branch --delete --force:*)",
+      "Bash(rtk git branch --delete --force:*)",
+      "Bash(rm -rf:*)",
+      "Bash(rtk rm -rf:*)",
+      "Bash(rm -fr:*)",
+      "Bash(rtk rm -fr:*)",
+      "Bash(terraform apply:*)",
+      "Bash(rtk terraform apply:*)",
+      "Bash(terraform destroy:*)",
+      "Bash(rtk terraform destroy:*)",
+      "Bash(terraform import:*)",
+      "Bash(rtk terraform import:*)",
+      "Bash(terraform state:*)",
+      "Bash(rtk terraform state:*)",
+      "Bash(kubectl apply:*)",
+      "Bash(rtk kubectl apply:*)",
+      "Bash(kubectl delete:*)",
+      "Bash(rtk kubectl delete:*)",
+      "Bash(kubectl edit:*)",
+      "Bash(rtk kubectl edit:*)",
+      "Bash(kubectl patch:*)",
+      "Bash(rtk kubectl patch:*)",
+      "Bash(kubectl scale:*)",
+      "Bash(rtk kubectl scale:*)",
+      "Bash(kubectl rollout:*)",
+      "Bash(rtk kubectl rollout:*)",
+      "Bash(helm install:*)",
+      "Bash(rtk helm install:*)",
+      "Bash(helm upgrade:*)",
+      "Bash(rtk helm upgrade:*)",
+      "Bash(helm uninstall:*)",
+      "Bash(rtk helm uninstall:*)",
+      "Bash(helm rollback:*)",
+      "Bash(rtk helm rollback:*)",
+      "Bash(docker system prune:*)",
+      "Bash(rtk docker system prune:*)",
+      "Bash(docker volume rm:*)",
+      "Bash(rtk docker volume rm:*)",
+      "Bash(docker volume prune:*)",
+      "Bash(rtk docker volume prune:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(rtk gh pr merge:*)",
+      "Bash(gh release:*)",
+      "Bash(rtk gh release:*)",
+      "Bash(npm publish:*)",
+      "Bash(rtk npm publish:*)",
+      "Bash(pnpm publish:*)",
+      "Bash(rtk pnpm publish:*)",
+      "Bash(yarn publish:*)",
+      "Bash(rtk yarn publish:*)",
+      "Bash(cargo publish:*)",
+      "Bash(rtk cargo publish:*)",
+      "Bash(dropdb:*)",
+      "Bash(rtk dropdb:*)"
+    ],
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.local)",
+      "Read(**/.env.*.local)",
+      "Read(**/.env.production)",
+      "Read(**/.env.development)",
+      "Read(**/.env.staging)",
+      "Read(**/.env.test)",
+      "Read(**/*.tfstate)",
+      "Read(**/*.tfstate.backup)",
+      "Read(~/.kube/config)",
+      "Read(~/.aws/credentials)",
+      "Read(~/.ssh/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Edit(**/.git/claude-workflow/**)"
+    ]
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "excludedCommands": [
+      "kubectl *",
+      "rtk kubectl *",
+      "terraform *",
+      "rtk terraform *",
+      "helm *",
+      "rtk helm *",
+      "aws *",
+      "rtk aws *",
+      "gcloud *",
+      "rtk gcloud *",
+      "docker *",
+      "rtk docker *"
+    ],
+    "network": {
+      "allowedDomains": [
+        "registry.npmjs.org",
+        "registry.yarnpkg.com",
+        "pypi.org",
+        "files.pythonhosted.org",
+        "crates.io",
+        "index.crates.io",
+        "static.crates.io",
+        "proxy.golang.org",
+        "sum.golang.org",
+        "github.com",
+        "api.github.com",
+        "codeload.github.com",
+        "raw.githubusercontent.com",
+        "objects.githubusercontent.com"
+      ]
+    }
+  },
+  "model": "sonnet",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "skin@ilianusss": true
+  },
+  "extraKnownMarketplaces": {
+    "team": {
+      "source": {
+        "source": "github",
+        "repo": "Zebuilder-ai/zb-claude-config"
+      }
+    },
+    "ilianusss": {
+      "source": {
+        "source": "github",
+        "repo": "ilianusss/claude-skin"
+      }
+    }
+  },
+  "effortLevel": "medium",
+  "modelSettings": {
+    "claude-opus-5": {
+      "effortLevel": "high"
+    },
+    "claude-opus-5-5": {
+      "effortLevel": "high"
+    },
+    "claude-sonnet-5-5": {
+      "effortLevel": "medium"
+    },
+    "claude-haiku-5-5": {
+      "effortLevel": "medium"
+    }
+  },
+  "tui": "fullscreen",
+  "theme": "dark-ansi"
+}
