@@ -28,6 +28,8 @@ Every Bash permission rule is written twice, plain and with `rtk ` in front, bec
 | `settings.json` | `claude -p --model haiku --settings ~/.claude/settings.json "Reply OK"` from any scratch folder |
 | A skill | The `skill-creator` skill's evals |
 
+A mod's tests run against Claude Code's own engine, which also enforces how a mod is written: hooks are function literals, one hook per event without a matcher, and `$` only ever passed straight to a top-level function. A module that breaks one of these does not load, and the test output names the line.
+
 Before committing a change to a mod, run both mods' tests:
 
 ```sh

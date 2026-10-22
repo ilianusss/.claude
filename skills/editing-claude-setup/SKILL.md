@@ -39,6 +39,8 @@ Keep an instruction only if it changes behaviour: the test is "would Claude do t
 - **A tool a mod answers itself skips the permission step.** A mod tool that needs the user's approval asks with `$.ui.ask`, never through `tool.check` or a settings rule.
 - **A mod command cannot run another command from its own hook.** Answer first, then run it from `$.clock.after`.
 - **`tool.call` sees a Bash command before `rtk`, `tool.check` after it.** Match both forms.
+- **The engine refuses to load a mod** whose hook is not a function literal (or a function's name), that registers two hooks on one event without a matcher, that puts `$` in an object, or that passes `$` to anything but a top-level function, declared or imported. `claude plugin test` reports "hooks module did not load" with the line.
+- **`house` refuses a literal em dash in a Write**, mod sources included: build it with `String.fromCharCode(0x2014)`.
 
 ## Mods
 
