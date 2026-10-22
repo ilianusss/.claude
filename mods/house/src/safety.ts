@@ -9,6 +9,10 @@ const ENV_ASSIGNMENT = /^[A-Za-z_][A-Za-z0-9_]*=/
 const GIT_OPTIONS_WITH_VALUE = new Set(['-C', '-c', '--git-dir', '--work-tree', '--namespace', '--exec-path', '--config-env'])
 const KUBE_OPTIONS_WITH_VALUE = new Set(['-n', '--namespace', '--context', '--kube-context', '--kubeconfig', '--cluster', '--user', '-s', '--server'])
 
+const CONTAINED_IN_SANDBOX = new Set(['rm'])
+// The deny rules in settings.json bind a command only inside the sandbox, so outside it a secret path has to ask.
+const SECRET_PATH = /\.env\b|\.ssh\b|\.kube\/config|\.aws\/credentials|\.tfstate|\.pem\b|\.key\b/
+
 const DISCARDS = 'can discard uncommitted work'
 
 function words(segment: string): string[] {
@@ -44,8 +48,6 @@ const git: Check = args => {
   const rest = args.slice(index + 1)
   const flags = shortFlags(rest)
   switch (subcommand) {
-    case 'push':
-      return 'pushes to a remote'
     case 'reset':
       return rest.includes('--hard') ? DISCARDS : undefined
     case 'clean':
@@ -130,25 +132,23 @@ const CHECKS: Readonly<Record<string, Check>> = {
   dropdb: () => 'drops a database',
 }
 
-export function riskyReason(command: string): string | undefined {
+export function riskyReason(command: string, unsandboxed = false): string | undefined {
   for (const segment of segments(command)) {
     const [program, ...args] = words(segment)
-    const what = program === undefined ? undefined : CHECKS[program]?.(args)
+    const isContained = program !== undefined && !unsandboxed && CONTAINED_IN_SANDBOX.has(program)
+    const what = program === undefined || isContained ? undefined : CHECKS[program]?.(args)
     if (what !== undefined) return `\`${segment}\` ${what}`
+    if (unsandboxed && SECRET_PATH.test(segment)) return `\`${segment}\` touches a secret outside the sandbox`
   }
   return undefined
 }
-
-const OUTSIDE_SANDBOX =
-  'house: Claude wants to run this outside the sandbox, which also skips the deny rules merged into it. Approve only if the sandbox is what blocked it.'
 
 export function registerSafety(on: On): void {
   on('tool.check', { tool: 'Bash' }, async ($, e, next) => {
     const verdict = await next(e)
     if (verdict.decision === 'deny') return verdict
     const input = (e.input ?? {}) as { command?: unknown; dangerouslyDisableSandbox?: unknown }
-    if (input.dangerouslyDisableSandbox === true) return { decision: 'ask', reason: OUTSIDE_SANDBOX }
-    const reason = riskyReason(typeof input.command === 'string' ? input.command : '')
+    const reason = riskyReason(typeof input.command === 'string' ? input.command : '', input.dangerouslyDisableSandbox === true)
     return reason === undefined ? verdict : { decision: 'ask', reason: `house: ${reason}. Approve only if you asked for it.` }
   }).catch(() => ({ decision: 'ask', reason: 'house: the safety check failed. Approve only if you asked for this command.' }))
 }

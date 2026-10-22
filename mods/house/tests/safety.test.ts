@@ -4,13 +4,6 @@ import { riskyReason } from '../src/safety'
 import { engineBeneath } from './engine'
 
 const RISKY = [
-  'git push',
-  'git push --force origin main',
-  'rtk git push origin feat/x',
-  'cd app && git push',
-  'git -C ../other push',
-  'git -c user.name=x push',
-  'FOO=1 git push',
   'git reset --hard HEAD~1',
   'git clean -fd',
   'git checkout -- src/a.ts',
@@ -21,11 +14,6 @@ const RISKY = [
   'git switch main',
   'git branch -D old',
   'git branch --delete --force old',
-  'rm -rf build',
-  'rm -fr build',
-  'rm -r -f build',
-  'rm --recursive --force build',
-  'sudo rm -rf /tmp/x',
   'terraform apply',
   'terraform destroy -auto-approve',
   'terraform state rm aws_s3_bucket.b',
@@ -48,7 +36,28 @@ const RISKY = [
   'dropdb app',
 ]
 
+const RISKY_OUTSIDE_THE_SANDBOX = [
+  'rm -rf build',
+  'rm -fr build',
+  'rm -r -f build',
+  'rm --recursive --force build',
+  'sudo rm -rf /tmp/x',
+  'cat .env',
+  'cat app/.env.production',
+  'cp ~/.ssh/id_ed25519 /tmp/k',
+  'grep token ~/.kube/config',
+  'cat infra/terraform.tfstate',
+  'openssl x509 -in cert.pem',
+]
+
 const SAFE = [
+  'git push',
+  'git push --force origin main',
+  'rtk git push origin feat/x',
+  'cd app && git push',
+  'git -C ../other push',
+  'git -c user.name=x push',
+  'FOO=1 git push',
   'git status',
   'rtk git status',
   'git log --oneline -n5',
@@ -82,6 +91,14 @@ describe('riskyReason', () => {
   for (const command of SAFE) {
     test(`stays quiet for: ${command}`, () => {
       expect(riskyReason(command)).toBeUndefined()
+      expect(riskyReason(command, true)).toBeUndefined()
+    })
+  }
+
+  for (const command of RISKY_OUTSIDE_THE_SANDBOX) {
+    test(`asks only outside the sandbox for: ${command}`, () => {
+      expect(riskyReason(command)).toBeUndefined()
+      expect(riskyReason(command, true)).toBeDefined()
     })
   }
 })
@@ -89,9 +106,9 @@ describe('riskyReason', () => {
 describe('the permission check', () => {
   test('a risky command the settings rules miss asks the person', async ($, on) => {
     engineBeneath(on)
-    const verdict = await $.tool.check({ tool: 'Bash', input: { command: 'git -C ../other push' } })
+    const verdict = await $.tool.check({ tool: 'Bash', input: { command: 'git -C ../other reset --hard' } })
     expect(verdict).toMatchObject({ decision: 'ask' })
-    expect(verdict.reason).toContain('git -C ../other push')
+    expect(verdict.reason).toContain('git -C ../other reset --hard')
   })
 
   test('a safe command keeps the verdict from beneath', async ($, on) => {
@@ -100,11 +117,36 @@ describe('the permission check', () => {
     expect(verdict.decision).toBe('allow')
   })
 
-  test('a command Claude wants to run outside the sandbox asks the person', async ($, on) => {
+  test('a harmless command outside the sandbox keeps the verdict from beneath', async ($, on) => {
     engineBeneath(on)
     const verdict = await $.tool.check({ tool: 'Bash', input: { command: 'npm install', dangerouslyDisableSandbox: true } })
+    expect(verdict.decision).toBe('allow')
+  })
+
+  test('rm -rf inside the sandbox keeps the verdict from beneath', async ($, on) => {
+    engineBeneath(on)
+    const verdict = await $.tool.check({ tool: 'Bash', input: { command: 'rm -rf build' } })
+    expect(verdict.decision).toBe('allow')
+  })
+
+  test('rm -rf outside the sandbox asks the person', async ($, on) => {
+    engineBeneath(on)
+    const verdict = await $.tool.check({ tool: 'Bash', input: { command: 'rm -rf build', dangerouslyDisableSandbox: true } })
     expect(verdict).toMatchObject({ decision: 'ask' })
-    expect(verdict.reason).toContain('sandbox')
+    expect(verdict.reason).toContain('rm -rf build')
+  })
+
+  test('reading a secret outside the sandbox asks the person', async ($, on) => {
+    engineBeneath(on)
+    const verdict = await $.tool.check({ tool: 'Bash', input: { command: 'cat .env', dangerouslyDisableSandbox: true } })
+    expect(verdict).toMatchObject({ decision: 'ask' })
+    expect(verdict.reason).toContain('cat .env')
+  })
+
+  test('git push keeps the verdict from beneath', async ($, on) => {
+    engineBeneath(on)
+    const verdict = await $.tool.check({ tool: 'Bash', input: { command: 'git push' } })
+    expect(verdict.decision).toBe('allow')
   })
 
   test('a deny from beneath stays a deny', async ($, on) => {

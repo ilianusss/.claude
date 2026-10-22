@@ -34,3 +34,9 @@ Dated one-line entries: what was decided and why. Newest last. Add one whenever 
 ## 2026-10-22: fewer deterministic blockers
 
 - **`settings.json` keeps only `deny` rules**: the `ask` list is gone and so is the `allow` list, which `autoAllowBashIfSandboxed` already made redundant for sandboxed commands. Push, discards, infra changes and publishes now rest on the CLAUDE.md Safety section and on the `house` asks, because the aim is to block only secrets and the workflow state and trust the model with the rest.
+
+## 2026-10-22: ask only for critical commands
+
+- **`house` stops asking for every unsandboxed command**: a harmless retry now keeps the verdict from beneath, so the auto-mode classifier judges it. The ask stays for commands on the risky list and for commands that touch a secret path, because the `deny` rules bind a command only inside the sandbox.
+- **`git push` never asks**: Claude may push, the ask stays on `gh pr merge`.
+- **`rm -rf` asks only outside the sandbox**: inside it the damage stays in the working directory, which the sandbox already contains.
