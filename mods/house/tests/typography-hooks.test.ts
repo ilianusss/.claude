@@ -28,6 +28,11 @@ describe('file edits', () => {
     const ran = await $.tool.call({ tool: 'Write', file_path: '/w/old.md', content: `old ${DASH} text, more` })
     expect(ran.deny).toBeUndefined()
   })
+  test('a notebook cell written with an em dash is refused', async ($, on) => {
+    engineBeneath(on)
+    const ran = await $.tool.call({ tool: 'NotebookEdit', notebook_path: '/w/a.ipynb', new_source: `x ${DASH} y` })
+    expect(ran.deny).toContain('em dash')
+  })
 })
 
 describe('commit messages and GitHub text', () => {

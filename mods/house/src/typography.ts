@@ -66,6 +66,11 @@ export function registerTypography(on: On): void {
     return added > 0 ? refusal(added) : next(e)
   }).catch(($, e, next) => (next.called ? next(e) : checkFailed('a Write')))
 
+  on('tool.call', { tool: 'NotebookEdit' }, ($, e, next) => {
+    const added = e.edit_mode === 'delete' ? 0 : countEmDashes(e.new_source)
+    return added > 0 ? refusal(added) : next(e)
+  }).catch(($, e, next) => (next.called ? next(e) : checkFailed('a notebook edit')))
+
   on('tool.call', { tool: 'Bash' }, async ($, e, next) => {
     if (!writesProse(e.command)) return next(e)
     let added = countEmDashes(e.command)
